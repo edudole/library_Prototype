@@ -1,7 +1,7 @@
 (()=>{'use strict';
 const API=window.APP_CONFIG.API_URL;
 const builtins=[
-  {id:'studentServicesBox',kind:'builtin',title:'บริการนักศึกษา',visible:true},
+  {id:'featured',kind:'builtin',title:'หนังสือที่น่าสนใจ',visible:true},
   {id:'learningSourceBox',kind:'builtin',title:'แหล่งเรียนรู้',visible:true},
   {id:'bestPracticeBox',kind:'builtin',title:'Best Practice',visible:true},
   {id:'FBpostBox',kind:'builtin',title:'Facebook',visible:true},
@@ -14,7 +14,9 @@ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const clamp=(n,min,max)=>Math.min(max,Math.max(min,Number(n)||min));
 function customId(){return 'custom-section-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8)}
 function normalizeItem(raw){
-  const id=String(raw?.id||'').trim();
+  let id=String(raw?.id||'').trim();
+  const legacyStudentServices=id==='studentServicesBox';
+  if(legacyStudentServices)id='featured';
   const builtin=builtinIds.has(id);
   if(!id||(!builtin&&!/^custom-section-[a-z0-9-]+$/i.test(id)))return null;
   const base=builtin?builtins.find(x=>x.id===id):null;
@@ -22,7 +24,7 @@ function normalizeItem(raw){
   return {
     id,
     kind:builtin?'builtin':'custom',
-    title:String(raw?.title||base?.title||'SECTION ใหม่').trim().slice(0,120)||'SECTION ใหม่',
+    title:String(legacyStudentServices?(base?.title||'หนังสือที่น่าสนใจ'):(raw?.title||base?.title||'SECTION ใหม่')).trim().slice(0,120)||'SECTION ใหม่',
     visible:raw?.visible!==false,
     sourceType:builtin?'':(rawType==='embed'?'embed':(rawType==='image'?'image':'url')),
     source:builtin?'':String(raw?.source||''),

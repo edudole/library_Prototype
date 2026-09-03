@@ -948,9 +948,9 @@ async function openNewsPopup(item) {
   const API_URL =
     window.APP_CONFIG.API_URL;
   const SEARCH_PAGES = [
-    'activity.html', 'best_practice.html', 'classroom.html', 'cliproom.html',
+    'activity.html', 'best_practice.html', 'cliproom.html',
     'contact.html', 'course.html', 'ex.html', 'innovation.html', 'learning.html',
-    'media.html', 'profile.html', 'quiz.html', 'reward.html', 'shopactivity.html',
+    'media.html', 'reward.html', 'shopactivity.html',
     'vision.html'
   ];
 
@@ -1176,7 +1176,7 @@ async function openNewsPopup(item) {
 (()=>{'use strict';
 const API=window.APP_CONFIG.API_URL;
 const builtins=[
-  {id:'studentServicesBox',kind:'builtin',title:'บริการนักศึกษา',visible:true},
+  {id:'featured',kind:'builtin',title:'หนังสือที่น่าสนใจ',visible:true},
   {id:'learningSourceBox',kind:'builtin',title:'แหล่งเรียนรู้',visible:true},
   {id:'bestPracticeBox',kind:'builtin',title:'Best Practice',visible:true},
   {id:'FBpostBox',kind:'builtin',title:'Facebook',visible:true},
@@ -1189,7 +1189,9 @@ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const clamp=(n,min,max)=>Math.min(max,Math.max(min,Number(n)||min));
 function customId(){return 'custom-section-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8)}
 function normalizeItem(raw){
-  const id=String(raw?.id||'').trim();
+  let id=String(raw?.id||'').trim();
+  const legacyStudentServices=id==='studentServicesBox';
+  if(legacyStudentServices)id='featured';
   const builtin=builtinIds.has(id);
   if(!id||(!builtin&&!/^custom-section-[a-z0-9-]+$/i.test(id)))return null;
   const base=builtin?builtins.find(x=>x.id===id):null;
@@ -1197,7 +1199,7 @@ function normalizeItem(raw){
   return {
     id,
     kind:builtin?'builtin':'custom',
-    title:String(raw?.title||base?.title||'SECTION ใหม่').trim().slice(0,120)||'SECTION ใหม่',
+    title:String(legacyStudentServices?(base?.title||'หนังสือที่น่าสนใจ'):(raw?.title||base?.title||'SECTION ใหม่')).trim().slice(0,120)||'SECTION ใหม่',
     visible:raw?.visible!==false,
     sourceType:builtin?'':(rawType==='embed'?'embed':(rawType==='image'?'image':'url')),
     source:builtin?'':String(raw?.source||''),
@@ -1461,295 +1463,6 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     document.addEventListener('DOMContentLoaded', scheduleHomeSummary, { once: true });
   } else {
     scheduleHomeSummary();
-  }
-})();
-
-;
-
-/* ===== profile-config.js ===== */
-window.STUDENT_PROFILE_WEB_APP_URL =
-  'https://script.google.com/macros/s/AKfycbzZPKCjqrvptWM7nVyquVLeU2GlKrS2UtljX1vQCqDHR2UVsL_-Tyh5BqVctKUwsv1C/exec';
-
-;
-
-/* ===== student-profile-login.js ===== */
-(() => {
-  'use strict';
-
-  function showMessage(options) {
-    if (window.Swal) return Swal.fire(options);
-    window.alert(options.text || options.title || 'เกิดข้อผิดพลาด');
-    return Promise.resolve();
-  }
-
-
-  function setTextColor(element, value) {
-    const color = String(value || '').trim();
-    if (!element || !color) return;
-    try {
-      if (window.CSS && CSS.supports && !CSS.supports('color', color)) return;
-    } catch (_) {}
-    element.style.color = color;
-  }
-
-  function applyLoginCardConfig(config) {
-    const data = config || {};
-    const title = document.getElementById('studentServicesLoginTitle');
-    const subtitle = document.getElementById('studentServicesLoginSubtitle');
-    const photo = document.getElementById('studentServicesLoginPhoto');
-    const logo = document.getElementById('studentServicesLoginLogo');
-
-    if (title && data.title) title.textContent = String(data.title);
-    if (subtitle) subtitle.textContent = String(data.subtitle || '');
-    setTextColor(title, data.titleColor);
-    setTextColor(subtitle, data.subtitleColor);
-
-    if (photo && data.photo) photo.src = String(data.photo);
-    if (logo && data.logo) {
-      logo.src = String(data.logo);
-      logo.hidden = false;
-    }
-  }
-
-  async function loadLoginCardConfig() {
-    try {
-      if (!window.SiteFast || typeof window.SiteFast.getHomeFast !== 'function') return;
-      const result = await window.SiteFast.getHomeFast();
-      const data = result?.data || result || {};
-      if (data.studentLogin) applyLoginCardConfig(data.studentLogin);
-    } catch (error) {
-      // การโหลดรูป/ข้อความเป็นเพียงส่วนแสดงผล ไม่ให้กระทบระบบ Login เดิม
-      console.warn('student login card config:', error);
-    }
-  }
-
-  async function login(event) {
-    event.preventDefault();
-
-    const input = document.getElementById('studentServicesId');
-    const button = document.getElementById('studentServicesLoginBtn');
-    const rollno = String(input?.value || '').replace(/\D/g, '').trim().slice(0, 10);
-
-    if (!rollno) {
-      await showMessage({
-        icon: 'warning',
-        title: 'กรุณากรอกรหัสนักศึกษา',
-        text: 'ระบุรหัสนักศึกษาก่อนเข้าสู่ระบบ',
-        confirmButtonText: 'ตกลง'
-      });
-      input?.focus();
-      return;
-    }
-
-    if (input) input.value = rollno;
-    if (button) {
-      button.disabled = true;
-      button.textContent = 'กำลังเข้าสู่ระบบ...';
-    }
-
-    /*
-     * เดิมหน้านี้เรียก Apps Script แบบ JSONP เพื่อตรวจรหัสก่อน 1 รอบ
-     * แล้ว profile.html จึงเรียก Web App ซ้ำอีกรอบ ทำให้ช้าและเกิด false timeout
-     * ทั้งที่ Web App ค้นหาพบรหัสได้จริง
-     *
-     * รุ่นนี้ส่งรหัสไป profile.html ทันที แล้วให้ Web App โปรไฟล์เป็นผู้ตรวจรหัส
-     * เพียงครั้งเดียว จึงไม่มี REQUEST_TIMEOUT/JSONP ที่ตัดการทำงานกลางทาง
-     */
-    try {
-      sessionStorage.setItem('SSS_PROFILE_ROLLNO', rollno);
-    } catch (_) {}
-
-    const profileUrl = `profile.html?rollno=${encodeURIComponent(rollno)}`;
-    window.location.assign(profileUrl);
-  }
-
-  function init() {
-    const form = document.getElementById('studentServicesLoginForm');
-    const input = document.getElementById('studentServicesId');
-
-    input?.addEventListener('input', () => {
-      input.value = input.value.replace(/\D/g, '').slice(0, 10);
-    });
-    form?.addEventListener('submit', login);
-    loadLoginCardConfig();
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init, { once: true });
-  } else {
-    init();
-  }
-})();
-
-;
-
-/* ===== student-service-ranking.js ===== */
-(() => {
-  'use strict';
-
-  // Web App เดิมของระบบหลัก (ไม่ต้องสร้าง Apps Script แยก)
-  const STUDENT_SERVICE_API_URL =
-    window.APP_CONFIG.API_URL;
-
-  const LEVELS = ['ประถม', 'ม.ต้น', 'ม.ปลาย'];
-  const MEDALS = ['🥇1', '🥈2', '🥉3'];
-  const CACHE_KEY = 'studentServiceTop3:v1';
-  const CACHE_AGE = 5 * 60 * 1000;
-  const AUTO_ROTATE_DELAY = 4000;
-  let rankingData = null;
-  let autoRotateTimer = null;
-  let activeLevelIndex = 0;
-  let autoRotateStoppedByUser = false;
-
-  const escapeHtml = value => String(value ?? '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#039;');
-
-  function readCache() {
-    try {
-      const cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) || 'null');
-      return cached && Date.now() - cached.savedAt < CACHE_AGE
-        ? cached.data
-        : null;
-    } catch (_) {
-      return null;
-    }
-  }
-
-  function writeCache(data) {
-    try {
-      sessionStorage.setItem(CACHE_KEY, JSON.stringify({ savedAt: Date.now(), data }));
-    } catch (_) {}
-  }
-
-  function renderCard(card, level) {
-    const type = card.dataset.rankingType;
-    const ranking = card.querySelector('.student-service-ranking');
-    const rows = rankingData && rankingData[type] && Array.isArray(rankingData[type][level])
-      ? rankingData[type][level].slice(0, 3)
-      : [];
-
-    card.querySelectorAll('.student-service-tabs button').forEach(button => {
-      const active = button.dataset.level === level;
-      button.classList.toggle('is-active', active);
-      button.setAttribute('aria-selected', String(active));
-    });
-
-    if (!rows.length) {
-      ranking.innerHTML = '<span class="student-service-ranking-status">ยังไม่มีข้อมูล</span>';
-      return;
-    }
-
-    ranking.innerHTML = rows.map((row, index) => `
-      <span title="${escapeHtml(row.teacher)}">
-        ${MEDALS[index]} &nbsp;${escapeHtml(row.teacher)}
-      </span>
-      <b title="${Number(row.percent || 0).toFixed(2)}%">
-        ${Number(row.percent || 0).toFixed(2)}%
-      </b>
-    `).join('');
-  }
-
-  function renderAll(level) {
-    document.querySelectorAll('[data-ranking-type]').forEach(card => {
-      const active = card.querySelector('.student-service-tabs .is-active');
-      renderCard(card, level || (active ? active.dataset.level : LEVELS[0]));
-    });
-  }
-
-  function stopAutoRotate() {
-    if (autoRotateTimer) {
-      window.clearInterval(autoRotateTimer);
-      autoRotateTimer = null;
-    }
-  }
-
-  function startAutoRotate() {
-    stopAutoRotate();
-    if (autoRotateStoppedByUser || !rankingData) return;
-
-    autoRotateTimer = window.setInterval(() => {
-      activeLevelIndex = (activeLevelIndex + 1) % LEVELS.length;
-      renderAll(LEVELS[activeLevelIndex]);
-    }, AUTO_ROTATE_DELAY);
-  }
-
-  function showError(message) {
-    document.querySelectorAll('[data-ranking-type] .student-service-ranking').forEach(box => {
-      box.innerHTML = `<span class="student-service-ranking-status">${escapeHtml(message)}</span>`;
-    });
-  }
-
-  async function loadRankings() {
-    rankingData = readCache();
-    if (rankingData) {
-      activeLevelIndex = 0;
-      renderAll(LEVELS[activeLevelIndex]);
-      startAutoRotate();
-      return;
-    }
-
-    if (!/^https:\/\/script\.google\.com\/macros\/s\//.test(STUDENT_SERVICE_API_URL)) {
-      showError('กรุณาตั้งค่า URL Apps Script');
-      return;
-    }
-
-    try {
-      let result;
-      if (window.SiteFast) {
-        result = await window.SiteFast.fetchMode(
-          'studentServiceTop3',
-          {},
-          { key: 'studentServiceTop3:v2', ttl: CACHE_AGE }
-        );
-      } else {
-        const separator = STUDENT_SERVICE_API_URL.includes('?') ? '&' : '?';
-        const response = await fetch(
-          `${STUDENT_SERVICE_API_URL}${separator}mode=studentServiceTop3`,
-          { method: 'GET', cache: 'default' }
-        );
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        result = await response.json();
-      }
-      if (!result || (!result.worksheet && !result.quiz)) {
-        throw new Error('รูปแบบข้อมูลไม่ถูกต้อง');
-      }
-
-      rankingData = result;
-      writeCache(result);
-      activeLevelIndex = 0;
-      renderAll(LEVELS[activeLevelIndex]);
-      startAutoRotate();
-    } catch (error) {
-      console.error('Student service ranking:', error);
-      showError('โหลดอันดับไม่สำเร็จ');
-    }
-  }
-
-  document.addEventListener('click', event => {
-    const tab = event.target.closest('.student-service-tabs button');
-    if (!tab) return;
-
-    autoRotateStoppedByUser = true;
-    stopAutoRotate();
-
-    activeLevelIndex = Math.max(0, LEVELS.indexOf(tab.dataset.level));
-    if (rankingData) renderAll(LEVELS[activeLevelIndex]);
-  });
-
-  function scheduleRankings() {
-    if (window.SiteFast) window.SiteFast.whenNear('studentServicesBox', loadRankings, '700px 0px');
-    else if ('requestIdleCallback' in window) requestIdleCallback(loadRankings, { timeout: 2200 });
-    else setTimeout(loadRankings, 500);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', scheduleRankings, { once: true });
-  } else {
-    scheduleRankings();
   }
 })();
 

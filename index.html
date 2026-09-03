@@ -51,7 +51,7 @@
   }
 
     /* ลดงาน layout/paint ของส่วนล่างที่ยังไม่อยู่ในจอ */
-    #learningSourceBox, #bestPracticeBox, #FBpostBox, #cliproomBox, #learningBaseModule {
+    #featured, #learningSourceBox, #bestPracticeBox, #FBpostBox, #cliproomBox, #learningBaseModule {
       content-visibility: auto;
       contain-intrinsic-size: 1px 620px;
     }
@@ -74,6 +74,7 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
       media="print" onload="this.media='all'">
   <link rel="stylesheet" href="theme-modern.css?v=20260902-buttons-2">
+  <link rel="stylesheet" href="book-featured.css?v=20260903-1">
 </head>
 <body class="website-data-loading theme-v2">
   <div id="adminLoginModal" class="admin-login-modal" hidden>
@@ -351,89 +352,46 @@
   </div>
 </section>
 
-<!-- บริการนักศึกษา: อยู่หลัง news-info-row และก่อนรายการ User -->
-<section id="studentServicesBox" class="student-services-section" aria-labelledby="studentServicesTitle" data-admin-section="1">
+<!-- หนังสือที่น่าอ่าน: อยู่ Box ถัดลงมาจากข่าวสาร -->
+<section id="featured" class="featured-section recommended-books-section" data-admin-section="1">
   <div class="container">
-    <div class="student-services-box">
-      <h2 id="studentServicesTitle">บริการนักศึกษา</h2>
-
-      <div class="student-services-grid">
-        <div class="student-services-account">
-          <div class="student-services-account-photo-wrap">
-            <img
-              id="studentServicesLoginPhoto"
-              class="student-services-account-image"
-              src="https://static.wixstatic.com/media/a503e5_de01d7417d364b9a81f6702f7dd6932a~mv2.png"
-              alt="ภาพหน้าเข้าสู่ระบบนักศึกษา">
-          </div>
-
-          <div class="student-services-login-panel">
-            <div class="student-services-login-brand">
-              <img
-                id="studentServicesLoginLogo"
-                class="student-services-login-logo"
-                alt="โลโก้หน่วยงาน">
-              <div id="studentServicesLoginTitle" class="student-services-login-title">ระบบช่วยเหลือผู้เรียน</div>
-              <div id="studentServicesLoginSubtitle" class="student-services-login-subtitle"></div>
-            </div>
-
-            <div class="student-services-login-divider" aria-hidden="true"></div>
-
-            <form id="studentServicesLoginForm" class="student-services-login">
-              <label for="studentServicesId">รหัสประจำตัวนักศึกษา</label>
-              <input
-                id="studentServicesId"
-                name="studentId"
-                type="text"
-                inputmode="numeric"
-                maxlength="10"
-                autocomplete="off"
-                aria-label="รหัสประจำตัวนักศึกษา">
-              <button id="studentServicesLoginBtn" type="submit">LOGIN</button>
-            </form>
-          </div>
-        </div>
-
-        <article class="student-service-card student-service-exam"
-                 data-ranking-type="quiz">
-          <div class="student-service-card-heading">
-            <strong>แบบทดสอบ</strong>
-            <span>แบบทดสอบยกระดับผลสัมฤทธิ์</span>
-          </div>
-          <p class="student-service-ranking-title">3 ลำดับ ทำแบบทดสอบสูงสุด</p>
-          <div class="student-service-board">
-            <div class="student-service-tabs" role="tablist" aria-label="เลือกระดับชั้นของรายงานแบบทดสอบ">
-              <button class="is-active" type="button" role="tab" aria-selected="true" data-level="ประถม">ประถม</button>
-              <button type="button" role="tab" aria-selected="false" data-level="ม.ต้น">ม.ต้น</button>
-              <button type="button" role="tab" aria-selected="false" data-level="ม.ปลาย">ม.ปลาย</button>
-            </div>
-            <div class="student-service-ranking" aria-live="polite">
-              <span class="student-service-ranking-status">กำลังโหลดอันดับ...</span>
-            </div>
-            <a class="student-service-open" href="quiz.html" target="_blank" rel="noopener">เข้าสู่ระบบ</a>
-          </div>
-        </article>
-
-        <article class="student-service-card student-service-classroom"
-                 data-ranking-type="worksheet">
-          <div class="student-service-card-heading">
-            <strong>ห้องเรียน</strong>
-            <span>เรียนรู้เนื้อหาวิชาด้วยสื่อและใบงาน</span>
-          </div>
-          <p class="student-service-ranking-title">3 ลำดับ ส่งใบงานสูงสุด</p>
-          <div class="student-service-board">
-            <div class="student-service-tabs" role="tablist" aria-label="เลือกระดับชั้นของรายงานใบงาน">
-              <button class="is-active" type="button" role="tab" aria-selected="true" data-level="ประถม">ประถม</button>
-              <button type="button" role="tab" aria-selected="false" data-level="ม.ต้น">ม.ต้น</button>
-              <button type="button" role="tab" aria-selected="false" data-level="ม.ปลาย">ม.ปลาย</button>
-            </div>
-            <div class="student-service-ranking" aria-live="polite">
-              <span class="student-service-ranking-status">กำลังโหลดอันดับ...</span>
-            </div>
-            <a class="student-service-open" href="classroom.html" target="_blank" rel="noopener">เข้าสู่ระบบ</a>
-          </div>
-        </article>
+    <div class="section-heading">
+      <div>
+        <span class="section-kicker">หนังสือที่น่าอ่าน</span>
+        <h2>หนังสือที่น่าสนใจ</h2>
       </div>
+
+    </div>
+
+    <div class="book-showcase">
+      <button id="bookPrev" class="book-slider-arrow book-slider-prev" type="button" aria-label="หนังสือก่อนหน้า">‹</button>
+      <div id="bookSlides" class="book-slider-stage">
+        <div class="book-loading">กำลังโหลดหนังสือ...</div>
+      </div>
+      <button id="bookNext" class="book-slider-arrow book-slider-next" type="button" aria-label="หนังสือถัดไป">›</button>
+      <div id="bookDots" class="book-slider-dots"></div>
+    </div>
+
+<!-- ปุ่มเปิด/ปิดหนังสือทั้งหมด -->
+<div class="book-toggle-wrap">
+<button id="toggleBookListBtn"
+        class="book-list-toggle"
+        type="button"
+        aria-expanded="false">
+
+    <span class="book-toggle-icon">
+        <i class="fa fa-eye-slash"></i>
+    </span>
+
+    <span class="book-toggle-text">
+        หนังสือทั้งหมด
+    </span>
+
+</button>
+</div>
+
+    <div id="allBooksPanel" class="all-books-panel" hidden>
+      <div id="allBooksGrid" class="all-books-grid"></div>
     </div>
   </div>
 </section>
@@ -617,6 +575,14 @@
 
 
   </main>
+
+  <!-- Popup รายละเอียดหนังสือ -->
+  <div id="bookDetailModal" class="book-detail-modal" aria-hidden="true">
+    <div class="book-detail-box" role="dialog" aria-modal="true" aria-labelledby="bookDetailTitle">
+      <button id="bookDetailClose" class="book-detail-close" type="button" aria-label="ปิด">×</button>
+      <div id="bookDetailContent"></div>
+    </div>
+  </div>
 
   <footer id="contact" class="footer">
     <div class="container footer-inner">
@@ -1003,6 +969,7 @@
     </div>
   </div>
 
+  <script defer src="book-featured.js?v=20260903-1"></script>
   <script defer src="index-fast.js?v=20260902-newsurl-optional-2"></script>
 </body>
 </html>
