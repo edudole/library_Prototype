@@ -144,7 +144,6 @@ body.theme-v2 .hero h1 {
 }
 
 body.theme-v2 .news-section,
-body.theme-v2 .student-services-section,
 body.theme-v2 .lsb-section,
 body.theme-v2 .best-practice-box-section,
 body.theme-v2 .fbpost-box-section,
@@ -175,8 +174,7 @@ body.theme-v2 .fbpost-box-heading {
 
 body.theme-v2 .section-heading h2,
 body.theme-v2 .best-practice-box-heading h2,
-body.theme-v2 .fbpost-box-heading h2,
-body.theme-v2 .student-services-box > h2 {
+body.theme-v2 .fbpost-box-heading h2 {
   color: #1d2743;
   letter-spacing: -.35px;
 }
@@ -203,7 +201,6 @@ body.theme-v2 .shopactivity-arrow {
   box-shadow: 0 10px 28px rgba(55,48,163,.14) !important;
 }
 
-body.theme-v2 .student-service-card,
 body.theme-v2 .activity-box-card,
 body.theme-v2 .best-practice-box-card,
 body.theme-v2 .fbpost-box-card,
@@ -217,7 +214,6 @@ body.theme-v2 .lsb-card {
   box-shadow: 0 14px 38px rgba(32,41,83,.09);
 }
 
-body.theme-v2 .student-service-card:hover,
 body.theme-v2 .activity-box-card:hover,
 body.theme-v2 .best-practice-box-card:hover,
 body.theme-v2 .fbpost-box-card:hover,
@@ -230,19 +226,6 @@ body.theme-v2 .lsb-card:hover {
   box-shadow: var(--theme-shadow-hover);
 }
 
-body.theme-v2 .student-service-board {
-  background: linear-gradient(145deg, #312e81, #1e3a8a 62%, #0e7490);
-}
-
-body.theme-v2 .student-service-tabs .is-active {
-  background: #4f46e5;
-}
-
-body.theme-v2 .student-service-open {
-  background: rgba(225,225,225,.10);
-  color: #ffffff;
-  border: 1px solid rgba(91,94,232,.13);
-}
 
 /* Index: action buttons use the same visual language as .shopactivity-open-all */
 body.theme-v2 .best-practice-box-more-btn,
@@ -713,8 +696,7 @@ body.theme-v2 .profile-home-btn {
   body.theme-v2 .bp-card,
   body.theme-v2 .innovation-card,
   body.theme-v2 .media-card,
-  body.theme-v2 .reward-card,
-  body.theme-v2 .student-service-card {
+  body.theme-v2 .reward-card {
     border-radius: 18px;
   }
 }

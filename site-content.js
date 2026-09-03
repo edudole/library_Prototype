@@ -4,9 +4,9 @@
   const API_URL =
     window.APP_CONFIG.API_URL;
   const SEARCH_PAGES = [
-    'activity.html', 'best_practice.html', 'classroom.html', 'cliproom.html',
+    'activity.html', 'best_practice.html', 'cliproom.html',
     'contact.html', 'course.html', 'ex.html', 'innovation.html', 'learning.html',
-    'media.html', 'profile.html', 'quiz.html', 'reward.html', 'shopactivity.html',
+    'media.html', 'reward.html', 'shopactivity.html',
     'vision.html'
   ];
 
