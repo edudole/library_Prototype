@@ -15,6 +15,10 @@
     '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;'
   })[character]);
 
+  function formatBookDetailHtml(value) {
+    return escapeHtml(String(value || 'ยังไม่มีรายละเอียด')).replace(/\s*\/\s*/g, '<br>');
+  }
+
   function normalizeBook(row, index) {
     row = row || {};
     return {
@@ -159,7 +163,7 @@
           <span class="book-detail-label">ชื่อหนังสือ</span>
           <h2 id="bookDetailTitle">${escapeHtml(book.title || '-')}</h2>
           <span class="book-detail-label">รายละเอียดที่น่าสนใจ</span>
-          <p>${escapeHtml(book.detail || 'ยังไม่มีรายละเอียด')}</p>
+          <p>${formatBookDetailHtml(book.detail)}</p>
         </div>
       </div>`;
     modal.classList.add('open');
@@ -203,6 +207,8 @@
     bindBookControls();
     loadBooks();
   }
+
+  document.addEventListener('book-admin-updated', loadBooks);
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once:true });
   else init();
