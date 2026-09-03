@@ -4,7 +4,7 @@
 1. อัปโหลดไฟล์และโฟลเดอร์ทั้งหมดใน ZIP ทับเว็บไซต์เดิม
 2. ลบไฟล์ mysite.html, mysite.js และ mysite.css บน GitHub หากยังคงอยู่
 3. เปิด index.html และกดปุ่ม "ผู้ดูแลระบบ"
-4. Login ด้วยบัญชี Admin เดิม
+4. Login ด้วย Username/Password จาก Spreadsheet 1czPYie3sd4gF4oe0aT3LfNmxBManrj112qnFqalUHvo ชีต 'library' (A=Email/Name, B=Username, C=Password)
 
 พฤติกรรมระบบ
 - ผู้ชมทั่วไปเห็นเว็บไซต์ปกติและไม่โหลดไฟล์เครื่องมือจัดการ

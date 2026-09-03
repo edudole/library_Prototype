@@ -1,6 +1,7 @@
 
 const WEBSITE_SPREADSHEET_ID = '1ew_J1mCK5OUuHF6mh9LqUcw5VeznnBTMv-QZoaQJHms';  //อำเภอ
-const ADMIN_LOGIN_SPREADSHEET_ID = '1hhOJLyKq9J4O7kbCg3u0MzgvnURi8m7V2FNEkrSjSHE';
+const ADMIN_LOGIN_SPREADSHEET_ID = '1czPYie3sd4gF4oe0aT3LfNmxBManrj112qnFqalUHvo';
+const ADMIN_LOGIN_SHEET_NAME = 'library';  // A=Email/Name, B=Username, C=Password
 const WEBSITE_IMAGE_SHEET = 'website_image';
 const NEWS_SHEET_NAME = 'news_page';
 const BOOK_SHEET_NAME = 'book';
@@ -871,11 +872,11 @@ function doPost(e) {
 }
 
 function getAdminLoginSheet_() {
+  // ผู้ดูแลระบบใช้บัญชีจากชีต library โดยตรง
+  // A = Email/Name, B = Username, C = Password
   const ss = SpreadsheetApp.openById(ADMIN_LOGIN_SPREADSHEET_ID);
-  const sheet = ss.getSheets().find(function (item) {
-    return String(item.getName() || '').trim().toLowerCase() === 'admin';
-  });
-  if (!sheet) throw new Error('ไม่พบชีต admin');
+  const sheet = ss.getSheetByName(ADMIN_LOGIN_SHEET_NAME);
+  if (!sheet) throw new Error('ไม่พบชีต ' + ADMIN_LOGIN_SHEET_NAME);
   return sheet;
 }
 
