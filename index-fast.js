@@ -1192,7 +1192,8 @@ const builtins=[
   {id:'bestPracticeBox',kind:'builtin',title:'Best Practice',visible:true},
   {id:'FBpostBox',kind:'builtin',title:'Facebook',visible:true},
   {id:'cliproomBox',kind:'builtin',title:'หลักสูตรออนไลน์',visible:true},
-  {id:'learningBaseModule',kind:'builtin',title:'ช้อปกิจกรรม',visible:true}
+  {id:'learningBaseModule',kind:'builtin',title:'ช้อปกิจกรรม',visible:true},
+  {id:'buttonsection',kind:'builtin',title:'ปุ่มทางลัด',visible:true}
 ];
 const builtinIds=new Set(builtins.map(x=>x.id));
 let layout=builtins.map(x=>({...x})),saving=false,pendingSave=false;
