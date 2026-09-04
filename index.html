@@ -51,7 +51,7 @@
   }
 
     /* ลดงาน layout/paint ของส่วนล่างที่ยังไม่อยู่ในจอ */
-    #featured, #learningSourceBox, #bestPracticeBox, #FBpostBox, #cliproomBox, #learningBaseModule {
+    #featured, #learningSourceBox, #bestPracticeBox, #FBpostBox, #cliproomBox, #learningBaseModule, #buttonsection {
       content-visibility: auto;
       contain-intrinsic-size: 1px 620px;
     }
@@ -75,6 +75,7 @@
       media="print" onload="this.media='all'">
   <link rel="stylesheet" href="theme-modern.css?v=20260902-buttons-2">
   <link rel="stylesheet" href="book-featured.css?v=20260903-1">
+  <link rel="stylesheet" href="button-section.css?v=20260904-library-buttonsection-1">
 </head>
 <body class="website-data-loading theme-v2">
   <div id="adminLoginModal" class="admin-login-modal" hidden>
@@ -574,6 +575,20 @@
 </section>
 
 
+<section id="buttonsection" class="button-section" aria-label="ปุ่มทางลัด">
+  <div class="container">
+    <div class="button-section-admin-actions admin-only">
+      <button id="manageButtonSectionButton" class="button-section-manage" type="button">
+        <i class="fa-solid fa-sliders" aria-hidden="true"></i>
+        <span>จัดการปุ่ม</span>
+      </button>
+    </div>
+    <div id="buttonSectionGrid" class="button-section-grid">
+      <div class="button-section-loading">กำลังโหลดรายการปุ่ม...</div>
+    </div>
+  </div>
+</section>
+
   </main>
 
   <!-- Popup รายละเอียดหนังสือ -->
@@ -969,7 +984,8 @@
     </div>
   </div>
 
+  <script defer src="button-section.js?v=20260904-library-buttonsection-1"></script>
   <script defer src="book-featured.js?v=20260904-book-admin-1"></script>
-  <script defer src="index-fast.js?v=20260904-book-admin-1"></script>
+  <script defer src="index-fast.js?v=20260904-library-buttonsection-1"></script>
 </body>
 </html>
